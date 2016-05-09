@@ -1,0 +1,36 @@
+How I tested:
+	Original plan: 
+		Generate every combination of 3 nodes in the network. If this subgraph has <2 edges, disregard other. Otherwise, run through the triadic motifs for isomorphisms: if it's isomorphic, we count it. 
+
+		Then, we generate a configuation model based on the graph we fed in. Networkx allows you to generate a configuratino model based on a degree sequence, with some chance that it has self loops and parallel edges – so you remove these, and you end up with an approximately randomized config model. I generate an arbitrary number of these (started with n = 100), and calculate the motif significance from these. Then we calculate the Z-Scores in the standard fashion. 
+
+		This method was too slow, so I tried to an edge based method. Here it was:
+
+		for edge1 in edges:
+		start = edge1[0]
+		node1 = edge1[1]
+		neighbor_edges = u_network.edges([node1, start])
+
+		# Get second node
+		for edge2 in neighbor_edges:
+			node2 = edge2[1]
+
+			# Ensure it's not the first node
+			if node2 != start:
+				nodes = sorted([start, node1, node2])
+				print 
+				print "VIEWED" + str(nodes)
+
+				# Test if triad is visited
+				if str(nodes) not in visited:
+					print "ADDED" + str(nodes)
+					visited.add(str(nodes))
+					triads.append(network.subgraph(nodes))
+	print len(triads)
+	return triads
+
+	This was broken. Because we don't know which way the original edge starts at. s
+
+	Originally wrote up the code to look for all 3 node combinations, this was too slow to work on the word association network. So I rewrote it to look for search by edges. 
+
+	TODO: Show how the frequency changes as I randomize the network. What do they mean by this exactly? Are we showing how the frequency stabilizes as we do multiple randomizations?
