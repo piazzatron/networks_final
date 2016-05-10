@@ -33,4 +33,10 @@ How I tested:
 
 	Originally wrote up the code to look for all 3 node combinations, this was too slow to work on the word association network. So I rewrote it to look for search by edges. 
 
+	The next night: tested with data from ecoli and yeast network. Saw that I was matching the correct amount of feed forward loops.
+
+	Determining the proper amount of trials was tricky. As the graph grows larger, the amount of trials required is reduced; additionally, small graphs suffer from the configuration algorithm not reproducing the degree sequence exactly
+
+
+	MAJOR algo improvement: not appending a subgraph each time, but just the nodes themselves. Memory is now reasonable, but we shift the subgraphs to the counting part and now we have this is_isomorphic call that slows everything way the hell down. But what do we know about graph isomorphism? We know that it's hard to prove two graphs are isomorphic, but easy to prove they're not – and we know that it has to be isomorphic to ONE of the graphs, so we can use the faster
 	TODO: Show how the frequency changes as I randomize the network. What do they mean by this exactly? Are we showing how the frequency stabilizes as we do multiple randomizations?
